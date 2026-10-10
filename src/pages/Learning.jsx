@@ -210,7 +210,7 @@ export default function Learning() {
   const [tab, setTab] = useState('perceptron')
   return (
     <div className="page">
-      <GateHead gate="9" icon="perceptron" title="Vehicle classes and traffic patterns">
+      <GateHead tech="Perceptron + competitive learning" icon="perceptron" title="Vehicles and patterns">
         Supervised learning sorts vehicles with the Perceptron rule. Unsupervised learning finds traffic patterns with the competitive rule, with no labels at all.
       </GateHead>
       <div className="row" style={{ marginBottom: 24 }}>

@@ -65,7 +65,7 @@ export default function FuzzySignal() {
 
   return (
     <div className="page">
-      <GateHead gate="6" icon="signal" title="Adaptive green light, fuzzy controller">
+      <GateHead tech="Fuzzy controller" icon="signal" title="Adaptive signals">
         Traffic density and waiting time go in. A fuzzy controller decides how long the light stays green so queues shrink instead of following a fixed timer.
       </GateHead>
 

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { CityProvider } from './state.jsx'
 import { APP_NAME } from './config.js'
-import { GATES } from './modules.js'
+import { FEATURES, GROUPS, featureOf } from './modules.js'
 import Icon from './components/Icon.jsx'
 import Concourse from './pages/Concourse.jsx'
 import RouteSearch from './pages/RouteSearch.jsx'
@@ -14,6 +14,7 @@ import NeuroFuzzy from './pages/NeuroFuzzy.jsx'
 import Learning from './pages/Learning.jsx'
 import Language from './pages/Language.jsx'
 import Scenario from './pages/Scenario.jsx'
+import About from './pages/About.jsx'
 
 const PAGES = {
   route: RouteSearch,
@@ -26,6 +27,7 @@ const PAGES = {
   learning: Learning,
   language: Language,
   scenario: Scenario,
+  about: About,
 }
 
 const fromHash = () => {
@@ -61,35 +63,45 @@ export default function App() {
   }
 
   useEffect(() => {
-    document.title = page === 'home' ? APP_NAME : `${GATES.find((g) => g.id === page)?.label ?? 'Emergency'} · ${APP_NAME}`
+    const name = featureOf(page)?.label ?? { scenario: 'Emergency drill', about: 'About' }[page]
+    document.title = name ? `${name} · ${APP_NAME}` : APP_NAME
   }, [page])
 
   const Page = PAGES[page]
+  const hasHowto = page !== 'home' && page !== 'about'
 
   return (
     <CityProvider>
-      <nav className="rail" aria-label="Modules">
-        <button className="rail-brand" onClick={() => go('home')} aria-label={`${APP_NAME}: concourse`} aria-current={page === 'home' ? 'page' : undefined}>
+      <nav className="rail" aria-label="Control centre">
+        <button className="rail-brand" onClick={() => go('home')} aria-label={`${APP_NAME}: home`} aria-current={page === 'home' ? 'page' : undefined}>
           <Icon name="city" size={22} />
-          <span className="tip">{APP_NAME}</span>
+          <span className="tip">Command centre</span>
         </button>
         <div className="rail-route">
-          {GATES.map((g) => (
-            <button key={g.id} className="rail-btn" onClick={() => go(g.id)} aria-current={page === g.id ? 'page' : undefined} aria-label={`Gate ${g.gate}: ${g.label}`}>
-              <b className={g.wide ? 'wide' : ''}>{g.gate}</b>
-              <span className="tip">{g.label}</span>
-            </button>
+          {GROUPS.map((gr) => (
+            <Fragment key={gr.id}>
+              {FEATURES.filter((f) => f.group === gr.id).map((f, i) => (
+                <button key={f.id} className={'rail-btn' + (i === 0 ? ' first' : '')} onClick={() => go(f.id)} aria-current={page === f.id ? 'page' : undefined} aria-label={f.label}>
+                  <Icon name={f.icon} size={20} />
+                  <span className="tip">{f.label}</span>
+                </button>
+              ))}
+            </Fragment>
           ))}
-          <button className="rail-btn star" onClick={() => go('scenario')} aria-current={page === 'scenario' ? 'page' : undefined} aria-label="Emergency scenario">
-            <b>★</b>
-            <span className="tip">Emergency</span>
+          <button className="rail-btn first star" onClick={() => go('scenario')} aria-current={page === 'scenario' ? 'page' : undefined} aria-label="Emergency drill">
+            <Icon name="alert" size={20} />
+            <span className="tip">Emergency drill</span>
           </button>
         </div>
+        <button className="rail-btn about" onClick={() => go('about')} aria-current={page === 'about' ? 'page' : undefined} aria-label="About this project">
+          <Icon name="info" size={20} />
+          <span className="tip">About</span>
+        </button>
       </nav>
 
       <main key={page}>{Page ? <Page /> : <Concourse go={go} />}</main>
 
-      {page !== 'home' && (
+      {hasHowto && (
         <>
           <button className="howto-toggle btn" onClick={() => setHowto((h) => !h)} aria-expanded={howto}>
             {howto ? 'Close' : 'How it works'}

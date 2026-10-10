@@ -23,7 +23,7 @@ export default function RouteSearch() {
 
   return (
     <div className="page">
-      <GateHead gate="1" icon="route" title="Route search: states, actions, path costs">
+      <GateHead tech="State-space search" icon="route" title="Route planner">
         Autonomous vehicle navigation as an AI search problem. Pick where the car starts and where it must go, then watch four search strategies explore the city.
       </GateHead>
 

@@ -52,7 +52,7 @@ export default function Language() {
 
   return (
     <div className="page">
-      <GateHead gate="10" icon="chat" title="Tiny language models for traffic alerts">
+      <GateHead tech="Bigram and trigram language models" icon="chat" title="Alert desk">
         A micro model (bigram, one previous word) and a small model (trigram, two previous words) learn from a few dozen traffic sentences, then predict and write short alerts. No GPU needed.
       </GateHead>
 

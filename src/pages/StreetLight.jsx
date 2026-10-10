@@ -51,7 +51,7 @@ export default function StreetLight() {
 
   return (
     <div className="page">
-      <GateHead gate="7" icon="bulb" title="Smart street lighting, fuzzy brightness">
+      <GateHead tech="Fuzzy inference" icon="bulb" title="Street lighting">
         Lamps dim when the street is bright or empty, and rise when it is dark and people or vehicles are about. Less energy, same safety.
       </GateHead>
 

@@ -79,7 +79,7 @@ export default function NeuroFuzzy() {
 
   return (
     <div className="page">
-      <GateHead gate="8" icon="brain" title="Neuro-fuzzy traffic prediction">
+      <GateHead tech="Neuro-fuzzy (ANFIS)" icon="brain" title="Congestion forecast">
         Temperature and humidity predict how congested the roads will be. A fuzzy rule base supplies the reasoning, a neural training loop learns its parameters from data.
       </GateHead>
 

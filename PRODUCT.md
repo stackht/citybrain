@@ -13,7 +13,7 @@ React (Vite), client-side only, no backend. Confirmed by user. Plus a standalone
 Students and examiners in an AI / Soft Computing (AISC) course who must demonstrate 10 practicals in one coherent mini-project, and viewers who want to understand how each classical AI technique works by manipulating it. (Inferred from the brief; labelled as assumption.)
 
 ## Product Purpose
-One city-traffic platform where ten AI techniques cooperate on a shared city map: graph search, Prolog-style rules, A* ambulance routing, Minimax cyber-defence, fuzzy signal control, fuzzy street lighting, neuro-fuzzy traffic prediction, perceptron + competitive learning, and bigram/trigram micro language models. Success: every problem statement is runnable, visible, and explainable in the browser, and an "emergency scenario" chains them together.
+One AI traffic command centre for a synthetic city. Its features (forecast, vehicle and pattern recognition, route planning, ambulance dispatch, signal rules, adaptive signals, street lighting, alert writing, cyber defence) are parts of one system, not separate exercises. The ten source problem statements are covered as features; an About page maps them for examiners.
 
 ## Positioning
 Not ten isolated demos: the modules feed each other through one shared city (density from the forecaster and classifier drives rules and fuzzy control, which set path costs for A*, which triggers language-model alerts, all guarded by the Minimax defence).

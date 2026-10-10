@@ -17,7 +17,8 @@ const P = {
   check: <path d="M5 12.5l4.5 4.5L19 7" />,
   download: <><path d="M12 4v11M7 11l5 5 5-5" /><path d="M5 20h14" /></>,
   copy: <><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" /></>,
-  arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
+  info: <><circle cx="12" cy="12" r="9" /><path d="M12 11v6M12 7.5v.1" /></>,
+  arrow:<path d="M5 12h14M13 6l6 6-6 6" />,
 }
 
 export default function Icon({ name, size = 24, stroke = 2 }) {

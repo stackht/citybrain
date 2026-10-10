@@ -39,7 +39,7 @@ export default function Cyber() {
 
   return (
     <div className="page">
-      <GateHead gate="5" icon="shield" title="Cyber-defence with Minimax">
+      <GateHead tech="Minimax" icon="shield" title="Cyber shield">
         An attacker tries to compromise the traffic control servers. The AI defender picks the move whose worst-case outcome is best, looking several moves ahead.
       </GateHead>
 
@@ -50,9 +50,9 @@ export default function Cyber() {
               {state.servers.map((s) => (
                 <div key={s.id} className={'server' + (s.comp ? ' comp' : '')}>
                   <div className="row tight"><b>{s.name}</b><span className="spacer" />{s.comp ? <span className="pill high">compromised</span> : <span className="pill low">secure</span>}</div>
-                  <div className="row tight"><span className="lbl" style={{ width: 96 }}>Importance</span><b className="num">{s.imp}</b></div>
-                  <div className="row tight"><span className="lbl" style={{ width: 96 }}>Vulnerability</span><Pips n={s.vuln} max={5} kind="vuln" /></div>
-                  <div className="row tight"><span className="lbl" style={{ width: 96 }}>Defence</span><Pips n={s.sec} max={MAX_SEC} kind="sec" /></div>
+                  <div className="row tight"><span className="lbl" style={{ width: 122 }}>Importance</span><b className="num">{s.imp}</b></div>
+                  <div className="row tight"><span className="lbl" style={{ width: 122 }}>Vulnerability</span><Pips n={s.vuln} max={5} kind="vuln" /></div>
+                  <div className="row tight"><span className="lbl" style={{ width: 122 }}>Defence</span><Pips n={s.sec} max={MAX_SEC} kind="sec" /></div>
                 </div>
               ))}
             </div>

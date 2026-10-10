@@ -46,7 +46,7 @@ export default function Scenario() {
     return { f, factor, eff, signals, route1, accidentEdge, status, route2, hot, fz, al, atk, an, s0 }
   }, [density, weather, start, goal])
 
-  // Push the story into the shared city so other gates show it.
+  // Push the story into the shared city so the other screens show it.
   useEffect(() => {
     if (stage >= 4) {
       setStatus(chain.status)
@@ -72,8 +72,8 @@ export default function Scenario() {
 
   return (
     <div className="page">
-      <GateHead gate="★" icon="city" title="Emergency scenario: all gates at once">
-        A storm hits, roads fill up, and an ambulance must cross the city. Each link in the chain is one of the practicals, feeding the next.
+      <GateHead tech="All features together" icon="city" title="Emergency drill">
+        A storm hits, roads fill up, and an ambulance must cross the city. Each link in the chain is one feature of the control centre, feeding the next.
       </GateHead>
 
       <div className="layout">
@@ -170,8 +170,8 @@ export default function Scenario() {
             <p className="note">Higher humidity and heat push the forecast up, so every road gets busier and the route changes.</p>
           </Panel>
           <Howto title="Why a chain?">
-            <p>Each gate is a separate technique, but a real traffic system needs them together: <strong>learning</strong> predicts load, <strong>rules and fuzzy logic</strong> set the signals, <strong>search</strong> plans routes, <strong>language models</strong> tell people, and <strong>game search</strong> protects the system behind it.</p>
-            <p>Running the chain also writes the accident and the alert to the shared city, so the other gates show them. Use “Reset the city” on the concourse to clear it.</p>
+            <p>Each feature uses a different technique, but a real traffic system needs them working together: <strong>learning</strong> predicts load, <strong>rules and fuzzy logic</strong> set the signals, <strong>search</strong> plans routes, <strong>language models</strong> tell people, and <strong>game search</strong> protects the system behind it.</p>
+            <p>Running the chain also writes the accident and the alert to the shared city, so the other screens show them. Use “Reset the city” on the home screen to clear it.</p>
           </Howto>
         </div>
       </div>

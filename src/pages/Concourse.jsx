@@ -4,7 +4,7 @@ import { CORRIDORS } from '../lib/city.js'
 import { solveSignal } from '../lib/rules.js'
 import { makeAlert } from '../lib/alerts.js'
 import { APP_NAME, APP_TAGLINE } from '../config.js'
-import { GATES } from '../modules.js'
+import { FEATURES, GROUPS } from '../modules.js'
 import CityMap from '../components/CityMap.jsx'
 import Icon from '../components/Icon.jsx'
 import { Pill } from '../components/Ui.jsx'
@@ -33,7 +33,7 @@ export default function Concourse({ go }) {
   return (
     <div className="home">
       <section className="hero3d" ref={heroRef} onMouseMove={onMove}>
-        <div className="hero3d-stage" aria-hidden="false">
+        <div className="hero3d-stage">
           <div className="hero3d-plane">
             <CityMap density={density} status={status} vehicles labels={false} start="n0" goal={null} />
           </div>
@@ -41,10 +41,10 @@ export default function Concourse({ go }) {
 
         <div className="hero3d-copy">
           <h1 className="concourse-title">{APP_NAME}</h1>
-          <p>{APP_TAGLINE} One synthetic city, read by every practical in this project. Follow the route below, or run them all at once.</p>
+          <p>{APP_TAGLINE} An AI command centre that forecasts traffic, routes vehicles, runs the signals and lights, writes the alerts and guards its own servers.</p>
           <div className="row">
-            <button className="btn" onClick={() => document.getElementById('journey')?.scrollIntoView({ behavior: 'smooth' })}>Begin the journey <Icon name="arrow" size={16} /></button>
-            <button className="btn ghost" onClick={() => go('scenario')}>Run the emergency</button>
+            <button className="btn" onClick={() => go('scenario')}>Run an emergency drill <Icon name="arrow" size={16} /></button>
+            <button className="btn ghost" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>See what it does</button>
           </div>
         </div>
 
@@ -63,25 +63,39 @@ export default function Concourse({ go }) {
         <div className="scroll-cue" aria-hidden="true">Scroll</div>
       </section>
 
-      <section id="journey" className="journey" aria-label="The ten practicals">
+      <section id="features" className="journey" aria-label="What the control centre does">
         <div className="journey-line" aria-hidden="true" />
-        {GATES.map((g, i) => (
-          <article className={'stop ' + (i % 2 ? 'right' : 'left')} key={g.id}>
-            <div className="stop-num" aria-hidden="true">{g.gate}</div>
-            <div className="stop-body">
-              <div className="stop-ic"><Icon name={g.icon} size={34} stroke={1.5} /></div>
-              <h2>{g.label}</h2>
-              <p className="stop-ps">{g.ps}</p>
-              <p className="note">{g.method}</p>
-              <button className="btn" onClick={() => go(g.id)}>Enter gate {g.gate} <Icon name="arrow" size={16} /></button>
+        {GROUPS.map((gr, i) => (
+          <article className={'chapter ' + (i % 2 ? 'right' : 'left')} key={gr.id}>
+            <div className="chapter-word" aria-hidden="true">{gr.label}</div>
+            <div className="chapter-body">
+              <h2>{gr.label}</h2>
+              <p className="stop-ps">{gr.blurb}</p>
+              <ul className="chapter-list">
+                {FEATURES.filter((f) => f.group === gr.id).map((f) => (
+                  <li key={f.id}>
+                    <button onClick={() => go(f.id)}>
+                      <span className="stop-ic"><Icon name={f.icon} size={24} stroke={1.5} /></span>
+                      <span>
+                        <b>{f.label}</b>
+                        <span className="note">{f.does}</span>
+                      </span>
+                      <Icon name="arrow" size={18} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           </article>
         ))}
-        <article className="stop finale">
-          <div className="stop-body">
-            <h2>All at once</h2>
-            <p className="stop-ps">A storm, an accident, an ambulance and an attack. Every gate fires in one chain.</p>
-            <button className="btn" onClick={() => go('scenario')}>Run the emergency <Icon name="arrow" size={16} /></button>
+        <article className="chapter finale">
+          <div className="chapter-body" style={{ justifyItems: 'center' }}>
+            <h2>Everything at once</h2>
+            <p className="stop-ps">A storm, an accident, an ambulance and an attack. Every feature fires in one chain.</p>
+            <div className="row">
+              <button className="btn" onClick={() => go('scenario')}>Run an emergency drill <Icon name="arrow" size={16} /></button>
+              <button className="btn ghost" onClick={() => go('about')}>About this project</button>
+            </div>
           </div>
         </article>
       </section>

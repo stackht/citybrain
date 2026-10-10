@@ -39,7 +39,7 @@ export default function SignalRules() {
 
   return (
     <div className="page">
-      <GateHead gate="2·3" wide icon="rules" title="Signal advisor in Prolog rules">
+      <GateHead tech="Prolog rules" icon="rules" title="Signal advisor">
         Facts hold the traffic density of each road. Logical rules classify it as low, medium or high and recommend a short, medium or long signal. This runs the same clauses as the .pl file.
       </GateHead>
 

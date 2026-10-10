@@ -1,17 +1,14 @@
 import Icon from './Icon.jsx'
 
-export function GateHead({ gate, wide, icon, title, children }) {
+export function GateHead({ icon, title, tech, children }) {
   return (
     <header className="gatehead fadein">
-      <div className={'gatehead-num' + (wide ? ' wide' : '')} aria-label={`Practical ${gate}`}>{gate}</div>
-      <div className="gatehead-row">
-        <div>
-          <h1>{title}</h1>
-          <p>{children}</p>
-        </div>
-        <span className="spacer" />
-        <div className="gatehead-ic"><Icon name={icon} size={30} /></div>
+      <div className="gatehead-ic"><Icon name={icon} size={30} /></div>
+      <div>
+        <h1>{title}</h1>
+        <p>{children}</p>
       </div>
+      {tech && <span className="tag gatehead-tech" title="Technique behind this feature">{tech}</span>}
     </header>
   )
 }

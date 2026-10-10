@@ -39,7 +39,7 @@ export default function Ambulance() {
 
   return (
     <div className="page">
-      <GateHead gate="4" icon="ambulance" title="Ambulance route with A*">
+      <GateHead tech="A* search" icon="ambulance" title="Ambulance dispatch">
         Hospital to emergency scene, avoiding blocked roads and construction zones. Click any road to close it and the route recomputes.
       </GateHead>
 
