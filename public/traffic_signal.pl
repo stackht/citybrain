@@ -1,7 +1,7 @@
 % ============================================================
 %  Traffic signal duration from traffic density (SWI-Prolog)
 %
-%  Facts      : traffic_density(Road, VehiclesPerMinute)
+%  Facts      : traffic_density(Road, PercentOfRoadFull)
 %  Rules      : density_level/2, signal_for_level/2, duration_seconds/2
 %  Top goal   : signal_duration(Road, Length, Seconds)
 %
@@ -20,9 +20,9 @@ traffic_density(harbour_gate,   30).
 traffic_density(depot_street,   60).
 
 % ---- Rule 1: classify density as low, medium or high ----
-%   low    : fewer than 30 vehicles / minute
-%   medium : 30 to 59 vehicles / minute
-%   high   : 60 or more vehicles / minute
+%   low    : fewer than 30 % of road capacity occupied
+%   medium : 30 to 59 % of road capacity occupied
+%   high   : 60 or more % of road capacity occupied
 density_level(Road, low) :-
     traffic_density(Road, V),
     V < 30.

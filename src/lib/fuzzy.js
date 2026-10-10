@@ -45,7 +45,7 @@ export function curve(fn, range, n = 100) {
 export const SIGNAL_SYSTEM = {
   inputs: {
     density: {
-      label: 'Traffic density', unit: 'veh/min', range: [0, 100],
+      label: 'Traffic density', unit: '% full', range: [0, 100],
       sets: { low: leftShoulder(15, 40), medium: tri(25, 50, 75), high: rightShoulder(60, 85) },
     },
     waiting: {

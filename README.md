@@ -1,33 +1,56 @@
 # SmartCity Traffic Brain (working title)
 
-One React site, no backend: an **AI traffic command centre** for a synthetic city.
-It is a single system whose features share one city, so each feature's output feeds the next.
-Rename it in `src/config.js`.
+A React + Vite single-page app (no backend) that runs an **AI traffic command centre** on a
+deterministic, **simulated** city. The landing page is one live dashboard; the ten original AI
+experiments are modules inside it and also available as full pages from the sidebar.
 
     npm install
     npm run dev        # development
-    npm run build      # static site in dist/
+    npm run build      # static site in dist/ (Cloudflare Pages: build `npm run build`, output `dist`)
 
-## Combined problem statement
-Build an AI traffic command centre that forecasts congestion, recognises vehicles and patterns,
-plans routes and ambulance dispatch, sets signal timings and street lighting, writes alerts for
-people, and defends its control servers from attack.
+Open the site with `?debug` (for example `/?debug#/`) to expose the simulation as `window.__sim` for testing.
 
-## Features and the source problem statements they cover
-| Feature | Technique | Source PS | Code |
-|---|---|---|---|
-| Route planner | State-space search (BFS/UCS/Greedy/A*) | 1 | `src/lib/search.js`, `src/pages/RouteSearch.jsx` |
-| Signal advisor | Prolog facts and rules | 2, 3 | `prolog/traffic_signal.pl`, `src/lib/rules.js` |
-| Ambulance dispatch | A* | 4 | `src/pages/Ambulance.jsx` |
-| Cyber shield | Minimax + alpha-beta | 5 | `src/lib/minimax.js` |
-| Adaptive signals | Fuzzy controller | 6 | `src/lib/fuzzy.js` |
-| Street lighting | Fuzzy inference | 7 | `src/lib/fuzzy.js` |
-| Congestion forecast | Neuro-fuzzy (ANFIS) | 8 | `src/lib/anfis.js` |
-| Vehicles and patterns | Perceptron + competitive learning | 9 | `src/lib/neural.js` |
-| Alert desk | Bigram µLM + trigram SLM | 10 | `src/lib/ngram.js` |
-| Emergency drill | All features chained | all | `src/pages/Scenario.jsx` |
+## What is simulated, and what is not
+- The city, vehicles, arrivals, weather and training data are **synthetic**. A badge on the dashboard says so.
+  No live traffic feed, CCTV or signal hardware is connected (those are optional future integrations).
+- Simulation time (advances only while running), wall-clock time (your computer) and real-world data (none) are shown separately.
+- "Prolog" on the dashboard is a JavaScript port of `prolog/traffic_signal.pl`, not a running SWI-Prolog process.
+  Run the .pl file yourself with `swipl -s prolog/traffic_signal.pl` and `?- report.`
+- The Minimax security game is a separate game-theory simulation, not attack detection.
+- Alerts are sampled from a small predefined corpus.
 
-The in-app **About** page shows the same mapping for examiners.
+## Architecture
+```
+src/sim/engine.js       one authoritative clock + state: road graph, vehicles, signals, metrics, events
+src/sim/network.js      directed road segments, lanes, capacity, signal phase groups
+src/sim/controller.js   signal timing: fuzzy controller and rule base (both evaluated, one applied)
+src/state.jsx           React bindings (useSyncExternalStore); experiment pages read a snapshot
+src/dashboard/          command-centre UI: map, KPIs, controls, AI decision panel, charts, events
+src/lib/                the algorithms: search/A*, fuzzy, rules, ANFIS, MLP, perceptron, competitive, n-grams, minimax
+src/pages/              the ten experiment pages (unchanged algorithms)
+```
+One simulation loop (`requestAnimationFrame`, fixed 0.5 s physics step, speed 1x to 8x) drives everything.
+Reset replays a seeded 2-minute warm-up so the initial scenario is identical every time.
 
-Run the Prolog file: `swipl -s prolog/traffic_signal.pl` then `?- report.`
-All data is synthetic.
+## How the ten problem statements connect to the simulation
+| PS | Where it appears | Uses shared simulation state |
+|---|---|---|
+| 1 Search | Route planner (dashboard + page) | live road load as cost, closed roads removed |
+| 2 Prolog rules | Signal control panel | road load % at the selected intersection |
+| 3 Multi-road | Signal control panel, "priority" | queues and waits of competing approaches |
+| 4 A* ambulance | Ambulance dispatch | closures, live cost; triggers signal priority |
+| 5 Minimax | Security game (separate) | independent |
+| 6 Fuzzy signals | Signal control panel, mode "AI · fuzzy" | density and waiting time per approach |
+| 7 Street lights | Lighting panel + map layer | simulated clock and road activity |
+| 8 Neuro-fuzzy | Forecast panel | weather inputs; optional demand scaling |
+| 9 Perceptron / competitive | Vehicles and patterns | live vehicles' features; demand and clock |
+| 10 Bigram / trigram | Traffic alerts | seed words chosen from live conditions |
+
+Experiment pages show road density frozen at the moment you open them (press "Update from live simulation" to refresh);
+road closures are always live.
+
+## Tests run
+A browser test (Playwright driving Edge) covered: dashboard as default, start/pause/reset (time and vehicle
+positions), reset determinism, demand and signal-mode effects, block tool, event feed, ambulance dispatch + reroute +
+signal priority, chart history, all experiment pages rendering, closure visible on the Ambulance page, and no
+horizontal overflow at 390 px. Visual checks were screenshots only.

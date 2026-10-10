@@ -137,7 +137,7 @@ export default function Scenario() {
               <div className="link-n">5</div>
               <div className="link-b">
                 <h3>{STEPS[4]} · fuzzy controller</h3>
-                {stage >= 5 && chain.fz && <p className="res">Busiest junction on the route ({roadName(chain.hot)}, {chain.eff[chain.hot]} veh/min, waiting 70 s) gets <b>{Math.round(chain.fz.crisp)} s</b> of green for the ambulance's approach.</p>}
+                {stage >= 5 && chain.fz && <p className="res">Busiest junction on the route ({roadName(chain.hot)}, {chain.eff[chain.hot]} % full, waiting 70 s) gets <b>{Math.round(chain.fz.crisp)} s</b> of green for the ambulance's approach.</p>}
               </div>
             </div>
             <div className="link-gap"><i /></div>

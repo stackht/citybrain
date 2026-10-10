@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
-import { CityProvider } from './state.jsx'
+import { CityProvider, PageSnapshot } from './state.jsx'
 import { APP_NAME } from './config.js'
-import { FEATURES, GROUPS, featureOf } from './modules.js'
+import { FEATURES, featureOf } from './modules.js'
 import Icon from './components/Icon.jsx'
 import Concourse from './pages/Concourse.jsx'
 import RouteSearch from './pages/RouteSearch.jsx'
@@ -15,6 +15,9 @@ import Learning from './pages/Learning.jsx'
 import Language from './pages/Language.jsx'
 import Scenario from './pages/Scenario.jsx'
 import About from './pages/About.jsx'
+import Dashboard from './dashboard/Dashboard.jsx'
+
+const MODULES = [...FEATURES].sort((a, b) => a.ps[0] - b.ps[0])
 
 const PAGES = {
   route: RouteSearch,
@@ -32,7 +35,7 @@ const PAGES = {
 
 const fromHash = () => {
   const h = window.location.hash.replace('#/', '').replace('#', '')
-  return h in PAGES ? h : 'home'
+  return h in PAGES || h === 'intro' ? h : 'home'
 }
 
 export default function App() {
@@ -63,43 +66,53 @@ export default function App() {
   }
 
   useEffect(() => {
-    const name = featureOf(page)?.label ?? { scenario: 'Emergency drill', about: 'About' }[page]
-    document.title = name ? `${name} · ${APP_NAME}` : APP_NAME
+    const name = featureOf(page)?.label ?? { scenario: 'Emergency drill', about: 'About', intro: 'Project intro', home: 'Command centre' }[page]
+    document.title = name && page !== 'home' ? `${name} · ${APP_NAME}` : `${APP_NAME}: command centre`
   }, [page])
 
   const Page = PAGES[page]
-  const hasHowto = page !== 'home' && page !== 'about'
+  const hasHowto = page !== 'home' && page !== 'about' && page !== 'intro'
 
   return (
     <CityProvider>
       <nav className="rail" aria-label="Control centre">
-        <button className="rail-brand" onClick={() => go('home')} aria-label={`${APP_NAME}: home`} aria-current={page === 'home' ? 'page' : undefined}>
+        <button className="rail-brand" onClick={() => go('home')} aria-label={`${APP_NAME}: command centre`} aria-current={page === 'home' ? 'page' : undefined}>
           <Icon name="city" size={22} />
+          <span className="rail-title"><b>{APP_NAME}</b><small>Command centre</small></span>
           <span className="tip">Command centre</span>
         </button>
+        <div className="rail-section">AI modules</div>
         <div className="rail-route">
-          {GROUPS.map((gr) => (
-            <Fragment key={gr.id}>
-              {FEATURES.filter((f) => f.group === gr.id).map((f, i) => (
-                <button key={f.id} className={'rail-btn' + (i === 0 ? ' first' : '')} onClick={() => go(f.id)} aria-current={page === f.id ? 'page' : undefined} aria-label={f.label}>
-                  <Icon name={f.icon} size={20} />
-                  <span className="tip">{f.label}</span>
-                </button>
-              ))}
-            </Fragment>
+          {MODULES.map((f) => (
+            <button key={f.id} className="rail-btn" onClick={() => go(f.id)} aria-current={page === f.id ? 'page' : undefined} aria-label={f.label}>
+              <Icon name={f.icon} size={20} />
+              <span className="rail-label">{f.label}<small>PS {f.ps.join('·')}</small></span>
+              <span className="tip">{f.label}</span>
+            </button>
           ))}
-          <button className="rail-btn first star" onClick={() => go('scenario')} aria-current={page === 'scenario' ? 'page' : undefined} aria-label="Emergency drill">
+          <button className="rail-btn" onClick={() => go('scenario')} aria-current={page === 'scenario' ? 'page' : undefined} aria-label="Emergency drill">
             <Icon name="alert" size={20} />
+            <span className="rail-label">Emergency drill<small>all modules</small></span>
             <span className="tip">Emergency drill</span>
           </button>
         </div>
-        <button className="rail-btn about" onClick={() => go('about')} aria-current={page === 'about' ? 'page' : undefined} aria-label="About this project">
-          <Icon name="info" size={20} />
-          <span className="tip">About</span>
-        </button>
+        <div className="rail-foot">
+          <button className="rail-btn" onClick={() => go('intro')} aria-current={page === 'intro' ? 'page' : undefined} aria-label="Project intro">
+            <Icon name="route" size={20} />
+            <span className="rail-label">Project intro</span>
+            <span className="tip">Project intro</span>
+          </button>
+          <button className="rail-btn about" onClick={() => go('about')} aria-current={page === 'about' ? 'page' : undefined} aria-label="About this project">
+            <Icon name="info" size={20} />
+            <span className="rail-label">About</span>
+            <span className="tip">About</span>
+          </button>
+        </div>
       </nav>
 
-      <main key={page}>{Page ? <Page /> : <Concourse go={go} />}</main>
+      <main key={page}>
+        {page === 'home' ? <Dashboard /> : page === 'intro' ? <PageSnapshot><Concourse go={go} /></PageSnapshot> : page === 'about' ? <About /> : <PageSnapshot><Page /></PageSnapshot>}
+      </main>
 
       {hasHowto && (
         <>

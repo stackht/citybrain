@@ -69,7 +69,7 @@ export default function SignalRules() {
 
           <Panel title={`Why? Proof for ${corridor.label}`} tag="trace">
             <div style={{ marginBottom: 14 }}>
-              <Slider label={`traffic_density(${sel}, V)`} value={v} min={0} max={100} unit=" veh/min" onChange={(n) => setEdgeDensity(corridor.edge, n)} hint={`low < ${THRESHOLDS.medium}, medium ${THRESHOLDS.medium}–${THRESHOLDS.high - 1}, high ≥ ${THRESHOLDS.high}`} />
+              <Slider label={`traffic_density(${sel}, V)`} value={v} min={0} max={100} unit=" % full" onChange={(n) => setEdgeDensity(corridor.edge, n)} hint={`low < ${THRESHOLDS.medium}, medium ${THRESHOLDS.medium}–${THRESHOLDS.high - 1}, high ≥ ${THRESHOLDS.high}`} />
             </div>
             <div className="metrics" style={{ marginBottom: 14 }}>
               <div className="metric"><b>{res.seconds}</b><span>seconds green ({res.length})</span></div>

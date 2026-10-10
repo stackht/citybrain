@@ -73,7 +73,7 @@ export default function FuzzySignal() {
         <div className="stack">
           <Panel title="Inputs" tag="live">
             <div className="row" style={{ alignItems: 'flex-start' }}>
-              <div style={{ flex: 1, minWidth: 220 }}><Slider label="Traffic density" value={density} min={0} max={100} unit=" veh/min" onChange={setDensity} /></div>
+              <div style={{ flex: 1, minWidth: 220 }}><Slider label="Traffic density" value={density} min={0} max={100} unit=" % full" onChange={setDensity} /></div>
               <div style={{ flex: 1, minWidth: 220 }}><Slider label="Waiting time" value={waiting} min={0} max={120} unit=" s" onChange={setWaiting} /></div>
             </div>
           </Panel>
