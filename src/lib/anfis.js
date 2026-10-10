@@ -10,7 +10,7 @@ export const T_RANGE = [5, 45]
 export const H_RANGE = [20, 100]
 export const SET_NAMES = [['cool', 'mild', 'hot'], ['dry', 'humid', 'wet']]
 
-const clip = (v) => Math.max(-0.015, Math.min(0.015, v))
+const clip = (v) => Math.max(-0.004, Math.min(0.004, v))
 const sig = (x) => 1 / (1 + Math.exp(-x))
 const norm = (T, H) => [(T - T_RANGE[0]) / (T_RANGE[1] - T_RANGE[0]), (H - H_RANGE[0]) / (H_RANGE[1] - H_RANGE[0])]
 
@@ -162,7 +162,7 @@ export function trainedModel(epochs = 80) {
   if (!cached) {
     const data = makeData()
     let m = newModel()
-    for (let i = 0; i < epochs; i++) m = trainEpoch(m, data, 0.006)
+    for (let i = 0; i < epochs; i++) m = trainEpoch(m, data, 0.002)
     cached = m
   }
   return cached

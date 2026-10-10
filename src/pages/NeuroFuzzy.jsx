@@ -24,7 +24,7 @@ export default function NeuroFuzzy() {
       let x = m
       const ls = []
       for (let i = 0; i < n; i++) {
-        x = trainEpoch(x, DATA, 0.006)
+        x = trainEpoch(x, DATA, 0.002)
         ls.push(mse(x, DATA))
       }
       setLosses((l) => [...l, ...ls])
