@@ -1,0 +1,141 @@
+/* =====================================================================
+   Cinema layer: quiet, dark, one warm accent, serif italic + tracked caps
+   ===================================================================== */
+:root {
+  --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --gold: var(--yellow);
+  --glass: rgba(14, 19, 32, 0.62);
+  --hair: rgba(185, 199, 221, 0.22);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+body {
+  background:
+    radial-gradient(1200px 700px at 78% -8%, rgba(83, 111, 175, 0.2), transparent 60%),
+    radial-gradient(900px 600px at 5% 40%, rgba(110, 106, 168, 0.12), transparent 60%),
+    var(--ground);
+  background-attachment: fixed;
+}
+/* film grain + vignette over everything */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: 0.06; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 89; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+/* top bar: dark glass, tracked caps, gold underline for the current gate */
+.topband { background: rgba(7, 10, 18, 0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: var(--text); border-bottom: 1px solid var(--hair); }
+.brand { color: var(--text); }
+.brand::after { width: 1px; background: var(--hair); }
+.brand-mark { background: transparent; border: 1px solid rgba(232, 196, 106, 0.55); border-radius: 50%; color: var(--gold); box-shadow: 0 0 18px rgba(232, 196, 106, 0.18); }
+.brand-name { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.35rem; letter-spacing: 0; }
+.brand-sub { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; color: var(--muted); opacity: 1; }
+.gate { color: var(--muted); border-right: 0; transition: color 0.6s var(--ease); }
+.gate::after { content: ''; position: absolute; left: 14px; right: 14px; bottom: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.6s var(--ease); }
+.gate:hover { background: none; color: var(--text); }
+.gate[aria-current='page'] { background: none; color: var(--gold); }
+.gate[aria-current='page']::after { transform: scaleX(1); }
+.gate-num { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.7rem; letter-spacing: 0; }
+.gate-num.wide { font-size: 1.4rem; }
+.gate-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+
+/* page header: glass slab with a glowing italic numeral */
+.gatehead {
+  background:
+    radial-gradient(600px 220px at 12% 50%, rgba(232, 196, 106, 0.16), transparent 70%),
+    var(--glass);
+  color: var(--text); border: 1px solid var(--hair); border-radius: 10px; backdrop-filter: blur(8px);
+  box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.8);
+}
+.gatehead-num { font-family: var(--serif); font-style: italic; font-weight: 500; color: var(--gold); text-shadow: 0 0 40px rgba(232, 196, 106, 0.35); letter-spacing: 0; line-height: 0.8; }
+.gatehead h1 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.01em; line-height: 1; }
+.gatehead p { font-weight: 400; color: var(--muted); }
+.gatehead-ic { background: transparent; color: var(--gold); border: 1px solid rgba(232, 196, 106, 0.4); border-radius: 50%; }
+
+/* panels: hairline glass, serif titles */
+.panel { background: var(--glass); border: 1px solid var(--hair); border-radius: 10px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.panel h2, .panel h3 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.5rem; letter-spacing: 0; }
+.howto { border: 1px solid var(--hair); border-radius: 10px; background: rgba(8, 12, 22, 0.35); }
+.howto h3 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.4rem; }
+.howto p, .howto ol { font-size: 0.95rem; }
+.tag { font-size: 0.6rem; letter-spacing: 0.22em; background: transparent; border: 1px solid var(--hair); border-radius: 999px; padding: 4px 10px; }
+th { font-size: 0.62rem; letter-spacing: 0.2em; }
+
+/* buttons: pills */
+.btn {
+  background: rgba(8, 11, 18, 0.45); color: var(--text); border: 1px solid rgba(232, 196, 106, 0.55); border-radius: 999px;
+  padding: 9px 20px; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; backdrop-filter: blur(6px);
+  transition: background 0.5s var(--ease), border-color 0.5s var(--ease), transform 0.3s var(--ease), box-shadow 0.5s var(--ease);
+}
+.btn:hover:not(:disabled) { background: rgba(232, 196, 106, 0.16); box-shadow: 0 0 24px -4px rgba(232, 196, 106, 0.45); }
+.btn:disabled { background: rgba(40, 48, 70, 0.3); color: #6d7384; border-color: var(--hair); }
+.btn.ghost { background: rgba(8, 11, 18, 0.35); box-shadow: none; border-color: var(--hair); color: var(--text); }
+.btn.ghost:hover:not(:disabled) { background: rgba(185, 199, 221, 0.1); border-color: rgba(185, 199, 221, 0.4); box-shadow: none; }
+.btn.danger { background: rgba(162, 61, 78, 0.5); border-color: var(--high); }
+.btn.sm { padding: 5px 14px; font-size: 0.62rem; }
+.seg { background: rgba(8, 11, 18, 0.45); border: 1px solid var(--hair); border-radius: 999px; padding: 3px; }
+.seg button { border-radius: 999px; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; padding: 6px 14px; transition: background 0.5s var(--ease), color 0.5s var(--ease); }
+.seg button[aria-pressed='true'] { background: rgba(232, 196, 106, 0.18); color: var(--gold); box-shadow: inset 0 0 0 1px rgba(232, 196, 106, 0.55); }
+select, input[type='text'], input[type='number'], textarea { background: rgba(8, 11, 18, 0.5); border: 1px solid var(--hair); border-radius: 8px; }
+input[type='range']::-webkit-slider-thumb { border-radius: 50%; background: var(--gold); border: 3px solid #0b0e16; box-shadow: 0 0 14px rgba(232, 196, 106, 0.5); }
+input[type='range']::-moz-range-thumb { border-radius: 50%; background: var(--gold); border: 3px solid #0b0e16; }
+.field label, .lbl { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.pill { border-radius: 999px; padding: 2px 11px; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* big numbers become quiet italic serif */
+.metric b, .verdict .sec, .link-n, .board .g { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: 0; }
+.metric b { font-size: clamp(2.4rem, 4.6vw, 3.6rem); }
+.metric span { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.verdict .sec { font-size: 2rem; }
+.board .g { font-size: 2rem; color: var(--gold); }
+.board .st { font-size: 0.6rem; letter-spacing: 0.26em; }
+
+/* callouts: glass with a gold hairline, not a yellow slab */
+.callout {
+  background: radial-gradient(500px 240px at 0% 0%, rgba(232, 196, 106, 0.2), transparent 70%), var(--glass);
+  color: var(--text); border: 1px solid rgba(232, 196, 106, 0.4); border-radius: 10px; box-shadow: 0 30px 80px -40px rgba(232, 196, 106, 0.35);
+}
+.callout h2 { font-family: var(--serif); font-style: italic; font-weight: 500; color: var(--gold); text-shadow: 0 0 30px rgba(232, 196, 106, 0.3); letter-spacing: 0; }
+.callout p { font-weight: 400; color: #dfe3ee; }
+.callout .btn { background: rgba(232, 196, 106, 0.14); color: var(--text); }
+.callout .btn:hover:not(:disabled) { background: rgba(232, 196, 106, 0.3); }
+.alertline { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.5rem; line-height: 1.25; }
+
+/* scenario chain */
+.link-n { background: rgba(232, 196, 106, 0.1); color: var(--gold); border: 1px solid rgba(232, 196, 106, 0.4); border-right: 0; border-radius: 10px 0 0 10px; font-size: 2.4rem; }
+.link-b { background: var(--glass); border: 1px solid var(--hair); border-left: 0; border-radius: 0 10px 10px 0; }
+.link.idle .link-n { background: rgba(40, 48, 70, 0.3); color: var(--muted); border-color: var(--hair); }
+.link h3 { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.35rem; }
+.link-gap i { background: rgba(232, 196, 106, 0.3); width: 1px; }
+
+/* maps and plots sit in a lit window */
+.svgwrap { background: rgba(5, 8, 14, 0.75); border: 1px solid var(--hair); border-radius: 10px; box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5); }
+.server { border-radius: 10px; background: rgba(40, 48, 70, 0.4); border: 1px solid var(--hair); }
+.code, .trace { background: rgba(4, 6, 11, 0.8); border: 1px solid var(--hair); border-radius: 10px; }
+.empty { border-radius: 10px; }
+
+/* slow, staggered arrival of panels */
+.stack > .panel, .stack > .howto, .stack > .callout, .hero-side > * {
+  animation: arrive 1s var(--ease) both;
+}
+.stack > :nth-child(2), .hero-side > :nth-child(2) { animation-delay: 0.12s; }
+.stack > :nth-child(3), .hero-side > :nth-child(3) { animation-delay: 0.24s; }
+.stack > :nth-child(n+4), .hero-side > :nth-child(n+4) { animation-delay: 0.36s; }
+@keyframes arrive { from { opacity: 0; transform: translateY(14px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+
+/* cursor-reactive tilt for the hero map */
+.tilt { perspective: 1400px; }
+.tilt-in { transition: transform 0.6s var(--ease); transform-style: preserve-3d; will-change: transform; }
+.concourse-title { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: -0.01em; }
+
+@media (max-width: 720px) { .gatehead h1 { font-size: 2rem; } }
+@media (prefers-reduced-motion: reduce) { .stack > *, .hero-side > * { animation: none !important; } .tilt-in { transform: none !important; } }
+
+.route-glow { filter: drop-shadow(0 0 6px rgba(232, 196, 106, 0.75)); }
+
+.gate-label { max-width: none; white-space: nowrap; }
+.gate { padding: 8px 12px; gap: 6px; }
+.gate-label { display: grid; }
+.metric b { line-height: 1.1; padding-bottom: 4px; }
